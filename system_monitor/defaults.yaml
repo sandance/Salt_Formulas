@@ -1,0 +1,10 @@
+system_monitor:
+    user: root
+    group: root
+    args: {CPU,MEM,DISK,MAXTIME}
+    filepath: /root/bin/
+    filename: systemmonitor2.sh
+    cmd:  
+    identifier: 'id-every-minute-script'
+    minute: 3
+    hour: 5

@@ -1,0 +1,19 @@
+{% import_yaml "system_monitor/defaults.yaml" as default_settings %}
+
+{# setup variables using grain #}
+{% set os_family_map = salt['grains.filter_by'] ({
+	'RedHat': {
+			"user" : "root",
+	}
+ },grain="os_family")
+%}
+
+{## merge the flavor_map to the default settings ##}
+{#{% do default_settings.system_monitor.update(os_family_map) %}#}
+
+{## Merge in system_monitor:lookup pillar ##}
+{% set sysmonitor = salt['pillar.get'] (
+	'system_monitor:lookup',default_settings.system_monitor,
+	merge=True
+	)
+%}	

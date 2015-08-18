@@ -1,0 +1,24 @@
+{% set map= {
+	'Debian': {
+        'client': 'ntp',
+        'server': 'ntpd',
+        'service': 'ntp',
+        'ntpdate': 'ntpdate',
+
+        'ntp_conf': '/etc/ntp.conf',
+        'ntpd_conf': '/etc/ntpd.conf',
+        'ntp_doc': 'ntp-doc',
+    },
+    'RedHat': {
+        'client': 'ntp',
+        'server': 'ntpd',
+        'service': 'ntpd',
+        'ntpdate': 'ntpdate',
+
+        'ntp_conf': '/etc/ntp.conf',
+        'ntpd_conf': '/etc/ntpd.conf',
+        'ntp_doc': 'ntp-doc',
+    },
+} %}
+
+{% set ntp = salt['grains.filter_by'](map,merge=salt['pillar.get']('ntp:lookup')) %}

@@ -1,0 +1,10 @@
+dojo:
+    lgfwms_install_dir:   /usr/lgfwms/installer_libs
+    user: root
+    group: root
+    dir_mode: 755
+    file_mode: 755
+    dest_dir: /usr/lgfwms
+    target_dir: /usr/lgfwms/
+    dojo_dir: /usr/lgfwms/dojo
+    

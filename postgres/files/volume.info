@@ -1,0 +1,8 @@
+c1data1 vglocal01   100G
+c2data1 vglocal01   100G
+wallog1 vglocal00   50G
+backup1 vglocal00   50G
+wallog2 vglocal00   50G
+backup2 vglocal00   50G
+pgtemp1 vglocal00   30G
+pgtemp2 vglocal00   30G

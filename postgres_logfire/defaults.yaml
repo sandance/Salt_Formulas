@@ -1,0 +1,10 @@
+postgres:
+    pkg: postgresql-9.3
+    python: python-psycopg2
+    service: postgresql
+    users: {}
+    pkg_contrib: postgresql-contrib
+    databases: {}
+    tablespaces: {}
+    disabled: True
+    conf_dir: /var/lib/pgsql/install/

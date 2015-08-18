@@ -1,0 +1,31 @@
+{% set cluster =  salt['grains.get']('cluster')  %}
+{% set mounts = salt['pillar.get']('install_mounts:lookup') %}
+
+#Mount the SFTP interface
+{{ mounts.sftp_dir }} :
+  mount.mounted:
+    - device: {{ cluster }}-intf-01:{{ mounts.sftp_dir }} 
+    - fstype: {{ mounts.fstype }}
+    - mkmnt: True # Create mount points if not already present
+    - opts:       # A list object of options 
+      - bg,hard,intr
+
+
+{{ mounts.sftp_dir }}:
+  mount.mounted:
+    - device: {{ cluster }}-intf-01:{{ mounts.sftp_dir }}
+    - fstype: {{ mounts.fstype }}
+    - mkmnt: True
+    - opts:
+      - bg,hard,intr
+
+/etc/fstab:
+  file.blockreplace:
+    - name: /etc/fstab
+    - marker_start: "#saltstart"
+    - marker_end: "#saltstop"
+    - content: |
+        {{ cluster }}-intf-01:{{ mounts.sftp_dir }}         {{ mounts.sftp_dir }}       {{ mounts.fstype }}     bg,hard,intr       0 0
+        {{ cluster }}-intf-01:{{ mounts.sftp_dir }}         {{ mounts.sftp_dir }}       {{ mounts.fstype }}     bg,hard,intr        0 0
+    - backup: minion
+    - show_changes: True

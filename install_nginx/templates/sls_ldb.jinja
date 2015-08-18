@@ -1,0 +1,54 @@
+{% import_yaml "hostinfo.yaml" as myroles %}
+
+server {
+     listen       443;
+    server_name  _;
+
+    ssl                  on;
+    ssl_certificate      /etc/nginx/certs/logfireapps.com.crt;
+    ssl_certificate_key  /etc/nginx/certs/logfireapps.com.key;
+
+    ssl_session_timeout  5m;
+    client_max_body_size 20m;
+
+    ssl_protocols  SSLv2 SSLv3 TLSv1;
+    ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
+    ssl_prefer_server_ciphers   on;
+    proxy_read_timeout 6000s;
+
+    location ~ ^/(?:\w+)/static2/dojo/(.+)$ {
+        alias /usr/lgfwms/dojo/$1;
+    }
+
+    location ~ ^/[a-zA-Z0-9]+_63_+[a-zA-Z0-9]+_rf+     {
+        proxy_pass   http://127.0.0.1:4200;
+    }
+
+    location ~ ^/[a-zA-Z0-9]+_63_+[a-zA-Z0-9]+     {
+        proxy_pass   http://127.0.0.1:31150;
+
+        }
+    
+    {% set hostname = salt['mine.get']('*','network.get_hostname','grains') %}
+
+    {% set hostinfo = salt['grains.get'](hostname,'') %} # gets the info from yaml file
+    
+    {% if hostinfo %}
+        upstream lgf63cluster_siab {
+    ip_hash;
+    server {{ hostinfo.ip_addr1 }} :443; #a2pp-app-01 
+    server {{ hostinfo.ip_addr2 }} :443; #a2pp-app-02 
+
+    }
+    
+    upstream lgf63cluster {
+        #ip_hash;
+    server {{ hostinfo.ip_addr1 }}:443; #a2pp-app-01
+    server {{ hostinfo.ip_addr2 }}:443; #a2pp-app-02
+    }
+    {% endif %}
+
+    
+
+
+}

@@ -1,0 +1,23 @@
+{# Lookup for Centos version specific RPM URLS and Version #}
+{% import_yaml "postgres/defaults.yaml" as defaults %}
+
+{% set osfam  = salt['grains.filter_by']({
+    'RedHat': {
+        'pkg': 'postgresql93',
+        'pkg_server': 'postgresql93-server',
+        'rpm' : 'http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/postgresql93-9.3.6-1PGDG.rhel6.x86_64.rpm',
+        'repo' : 'pgdg93',
+        'service': 'postgresql-9.3'
+    },
+},'os_family') %}
+
+
+{% do defaults.postgres.update(osfam) %}
+
+{## Merge in sysstat:lookup pillar ##}
+{% set postgres = salt['pillar.get'] (
+    'postgres:lookup',
+    default=defaults.postgres,
+    merge=True
+    )
+%}

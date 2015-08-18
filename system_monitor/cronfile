@@ -1,0 +1,7 @@
+###############################################################################################
+# System Level crons
+*/5 * * * * /root/bin/systemmonitor2.sh CPU
+*/5 * * * * /root/bin/systemmonitor2.sh MEM
+*/5 * * * * /root/bin/systemmonitor2.sh DISK
+*/5 * * * * /root/bin/systemmonitor2.sh MAXTIME
+

@@ -1,0 +1,4 @@
+{% set target = salt['pillar.get']('openssh:known_hosts:target','*') -%}
+{% set expr_form = salt['pillar.get']('openssh:known_hosts:expr_form','glob') -%}
+{% set key_function = salt['pillar.get']('openssh:known_hosts:mine_hostnam_function','public_ssh_hostname') -%}
+

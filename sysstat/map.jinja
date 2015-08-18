@@ -1,0 +1,24 @@
+{## Start with defaults from defaults.yml ##}
+{% import_yml 'sysstat/defaults.yml' as default_settings %}
+
+{# setup variables using grain #}
+{% set os_family_map = salt['grains.filter_by'] ({
+	'RedHat': {
+		"service": {
+			"name" : "sysstat",
+			"enabled": False
+		}
+	}
+ },grain="os_family")
+%}
+
+{## merge the flavor_map to the default settings ##}
+{% do default_settings.sysstat.update(os_family_map) %}
+
+{## Merge in sysstat:lookup pillar ##}
+{% set sysstat_settings = salt['pillar.get'] (
+	'sysstat:lookup',
+	default=default_settings.sysstat,
+	merge=True
+	)
+%}	

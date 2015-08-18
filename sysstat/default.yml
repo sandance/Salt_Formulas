@@ -1,0 +1,8 @@
+sysstat:
+ pkg: sysstat
+  service:
+   name: sysstat
+   enabled: True
+  config:
+   path: '/etc/default/sysstat'
+   enabled: True

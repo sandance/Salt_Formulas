@@ -1,0 +1,9 @@
+python:
+    python2:
+        pkg: python
+        dev_pkg: python-dev
+        pip-pkg: python-pip
+    python3:
+        pkg: python3
+        dev_pkg: python3-dev
+        pip-pkg: python-pip

@@ -1,0 +1,34 @@
+{% import_yml 'python/default.yml' as default_settings %}
+
+{# setup variables using grain #}
+{% set python2 = salt['grains.filter_by'] ({
+    'Debian': {
+        "python2": {
+            "dev_pkg" : "python-dev"
+        }
+    },
+    
+    'RedHat': {
+        "python3": {
+            "dev_pkg" : "python-dev"
+        }
+    },
+},merge=salt['pillar.get']('python2:lookup')) %}
+
+
+{% set python3 = salt['grains.filter_by'] ({
+    'RedHat': {
+        "python3":{
+            "dev_pkg" : "python-devel"
+            }
+    },
+    'Debian': {
+        "python3": {
+            "dev_pkg" : "python-dev"
+        }
+    },
+},merge=salt['pillar.get']('python3:lookup')) %}
+
+{% do default_settings.sysstat.update(python2) %}
+{% do default_settings.sysstat.update(python3) %}
+

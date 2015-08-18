@@ -1,0 +1,61 @@
+nit-script:
+  file.managed:
+    - name: /etc/init/redis-server.conf
+    - template: jinja
+    - source: salt://redis/files/upstart.conf.jinja
+    - mode: 0750
+    - user: root
+    - group: root
+    - context:
+        conf: /etc/redis/redis.conf
+        user: {{ user }}
+        bin: {{ bin }}
+    - require:
+      - sls: redis.common
+
+
+redis-old-init-disable:
+  cmd.wait:
+    - name: update-rc.d -f redis-server remove
+    - watch:
+      - file: redis-init-script
+
+
+redis-log-dir:
+  file.directory:
+    - name: /var/log/redis
+    - mode: 755
+    - user: {{ user }}
+    - group: {{ group }}
+    - makedirs: True
+    - require:
+      - user: redis_user
+
+
+redis-server:
+  file.managed:
+    - name: /etc/redis/redis.conf
+    - makedirs: True
+    - template: jinja
+    - source: salt://redis/files/redis-{{ cfg_version }}.conf.jinja
+    - require:
+      - file: redis-init-script
+      - cmd: redis-old-init-disable
+  service.running:
+    - watch:
+      - file: redis-init-script
+      - cmd: redis-old-init-disable
+      - file: redis-server
+
+
+{% else %}
+
+
+redis_config:
+  file.managed:
+    - name: {{ cfg_name }}
+    - template: jinja
+    - source: salt://redis/files/redis-{{ cfg_version }}.conf.jinja
+    - require:
+      - pkg: {{ pkg_name }}
+

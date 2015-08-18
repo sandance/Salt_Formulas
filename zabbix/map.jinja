@@ -1,0 +1,16 @@
+{% set zabbix = salt['grains.filter_by']({
+    'default': {
+        'user' : 'zabbix',
+        'group' : 'zabbix',
+        'server' : '10.210.97.91',
+        'serveractive' : '10.210.97.91', 
+        'agent' : {
+            'pkg' : 'zabbix-agent',
+            'service': 'zabbix-agent',
+            'version': '2.4.5-1.el6',
+            'config' : '/etc/zabbix/zabbix_agentd.conf',
+            'rpm' : 'http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm',
+            'rpm_alter': 'http://repo.zabbix.com/zabbix/2.4/rhel/6/$basearch/',
+            }
+        },
+    },merge=salt['pillar.get']('zabbix')) %}

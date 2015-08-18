@@ -1,0 +1,25 @@
+nginx:
+  lookup:
+    package: nginx-custom
+    service: nginx
+  service:
+    enable: True
+    opts: {} # Parameters of service.running / service.dead
+
+  config:
+    - server:
+      - server_name: _
+      - listen:
+        - 80
+        - default_server
+      - ssl:
+        - on
+      - ssl_certificate:
+        - /etc/nginx/certs/logfireapps.com.crt
+      - ssl_certificate_key:
+        - /etc/nginx/certs/logfireapps.com.key
+      - ssl_session_timeout:
+        - 5m
+      - client_max_body_size:
+        - 
+

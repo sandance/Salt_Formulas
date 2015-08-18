@@ -1,0 +1,5 @@
+RedHat:
+    rpm: http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/postgresql93-9.3.6-1PGDG.rhel6.x86_64.rpm
+    pkg: postgresql93-server
+    repo : pgdg93
+

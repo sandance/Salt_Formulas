@@ -1,0 +1,7 @@
+ssh_user:
+    name: lgf_deploy
+    fullname: Logfire Deployment
+    uid: 8001
+    gid: 8001
+    groups: {lgf_deploy}
+    state: 'present'

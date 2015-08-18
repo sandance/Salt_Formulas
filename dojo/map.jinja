@@ -1,0 +1,7 @@
+{% import_yaml "dojo/defaults.yaml" as defaults %}
+
+{# merge the pillar dojo release version into the defaults dict #}
+{% set dojo_release = salt['pillar.get']('postgres:dojo_release_version',default=defaults.dojo,merge=True) %}
+
+{# merge the actual postgres pillar into the combined dict #}
+{% set dojo = salt['pillar.get']('dojo',default=dojo_release,merge=True) %}
