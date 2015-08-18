@@ -1,0 +1,6 @@
+apache:
+  lookup:
+    name: httpd
+    config:
+      tmpl: salt//apache/files/httpd.conf
+
